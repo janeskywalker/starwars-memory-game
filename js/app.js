@@ -48,8 +48,8 @@ class Game {
     }
     
 
-    StartGame() {
-        this.dealer.shuffleCards(this.cards)
+    startGame() {
+        this.dealer.shuffle(this.cards)
     }
 
     checkMatching() {
@@ -65,32 +65,26 @@ class Game {
 // --------------Dealer class---------------
 
 class Dealer {
-    constructor (cards) {
-        this.cards = cards 
+    constructor () {
+        this.cards = []
+    }
+
+    shuffle(cards) {
+        cards.sort(() => Math.random() - 0.5)
+        console.log("shuffledCards:", cards)
+
+        this.card = cards
+    }
+
+    deal() {
 
     }
 
-
-    shuffleCards() {
-        this.cards.sort()
-    }
-
-    dealCards() {
-
-    }
 }
 
 
-// --------------Player class---------------
+// --------------Board class---------------
 
-
-class Player {
-    constructor() {
-    }
-
-    flipCard() {
-    }
-}
 
 
 
@@ -99,4 +93,4 @@ class Player {
 // --------------Game start---------------
 
 const game = new Game(cards)
-//console.log(game)
+game.startGame()
