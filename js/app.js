@@ -37,19 +37,30 @@ const flipCard = (evt) => {
 $div.on("click", flipCard)
 
 
+
+
+
+
+
+
+
+
 // --------------Game class---------------
 class Game {
     constructor(cards) {
-        this.cards = cards
-        this.dealer = new Dealer()
-        this.player1 = new Player()
-        this.player2 = new Player()
-        this.cardsInPlay = []
+        this.dealer = new Dealer(cards)
     }
     
 
     startGame() {
         this.dealer.shuffle(this.cards)
+        console.log("cards after shuffled", this.dealer.cards)
+        const cardsOnBoard = this.dealer.deal()
+        displayCards(cardsOnBoard)
+    }
+
+    displayCards(cardsOnBoard) {
+
     }
 
     checkMatching() {
@@ -65,21 +76,24 @@ class Game {
 // --------------Dealer class---------------
 
 class Dealer {
-    constructor () {
-        this.cards = []
+    constructor (cards) {
+        this.cards = cards
+        this.cardsOnBoard = []
     }
 
-    shuffle(cards) {
-        cards.sort(() => Math.random() - 0.5)
-        console.log("shuffledCards:", cards)
-
-        this.card = cards
+    shuffle() {
+        this.cards.sort(() => Math.random() - 0.5)
+        console.log("shuffledCards:", this.cards)
     }
 
     deal() {
-
+        // top two cards on board, deal top two cards twice 
+        this.cardsOnBoard.push(this.cards[0], this.cards[1], this.cards[0], this.cards[1])
+        this.cardsOnBoard.sort(() => Math.random() - 0.5)
+        console.log(this.cardsOnBoard)
+       
+        return cardsOnBoard
     }
-
 }
 
 
@@ -90,7 +104,12 @@ class Dealer {
 
 
 
+
+
+
+
 // --------------Game start---------------
 
 const game = new Game(cards)
 game.startGame()
+
