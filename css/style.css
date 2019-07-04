@@ -1,0 +1,15 @@
+* {
+    box-sizing: border-box;
+}
+
+
+div {
+    padding: 50px;
+    background-color: rgb(63, 112, 70);
+
+}
+
+div .col {
+    border: 2px solid white;
+} 
+

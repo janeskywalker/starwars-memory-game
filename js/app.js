@@ -29,16 +29,30 @@ const cards = [
 ]
 
 
+// add click eventListner to the div to flip card
+const $div = $('#cardDisplay')
+const flipCard = (evt) => {
+    console.log(evt.target)
+}
+$div.on("click", flipCard)
 
+
+// --------------Game class---------------
 class Game {
     constructor(cards) {
         this.cards = cards
+        this.dealer = new Dealer()
+        this.player1 = new Player()
+        this.player2 = new Player()
         this.cardsInPlay = []
-        
+    }
+    
+
+    StartGame() {
+        this.dealer.shuffleCards(this.cards)
     }
 
     checkMatching() {
-
     }
 
     determinWinner() {
@@ -48,6 +62,7 @@ class Game {
 
 
 
+// --------------Dealer class---------------
 
 class Dealer {
     constructor (cards) {
@@ -57,7 +72,7 @@ class Dealer {
 
 
     shuffleCards() {
-
+        this.cards.sort()
     }
 
     dealCards() {
@@ -66,23 +81,14 @@ class Dealer {
 }
 
 
+// --------------Player class---------------
 
 
 class Player {
     constructor() {
-        
     }
 
-    playCard() {
-
-    }
-
-    choosePlayAgain() {
-
-    }
-
-    chooseQuit() {
-
+    flipCard() {
     }
 }
 
@@ -90,11 +96,7 @@ class Player {
 
 
 
+// --------------Game start---------------
 
 const game = new Game(cards)
-console.log(game)
-
-const player1 = new Player()
-const player2 = new Player()
-
-console.log(player1, player2)
+//console.log(game)
