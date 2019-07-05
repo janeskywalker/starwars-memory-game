@@ -116,6 +116,7 @@ class Game {
                     console.log("playerTwoScore:", this.playerTwoScore)
                 }
 
+                // check if hasCards?
 
 
 
@@ -127,6 +128,9 @@ class Game {
                     this.flipCardsBack()
                 }, 4000)
             }
+
+            this.switchPlayers()
+
         }
 
     flipCardsBack() {
@@ -153,18 +157,19 @@ class Game {
 
     // switch player
     switchPlayers() {
+        console.log('switching player')
         if (this.turn === 'Player One') {
             this.turn = 'Player Two'
         } else {
             this.turn = 'Player One'
         }
 
-        alert(`${this.turn} it's your turn.`)
-
-        this.cardsFlipped = []
+        console.log(`${this.turn}`)
 
         // flip cards back to back 
         // only flip the unmatched ones 
+
+
 
     }
 
