@@ -1,42 +1,32 @@
 
 const cards = [
     {
+        id: 0,
+        name: "leia"
+    }, 
+    {
         id: 1,
-        name: "Princess Leia"
+        name: "han"
     }, 
     {
         id: 2,
-        name: "Han Solo"
+        name: "luke"
     }, 
     {
         id: 3,
-        name: "Luke"
+        name: "darth"
     }, 
     {
         id: 4,
-        name: "Darth Vader"
-    }, 
-    {
-        id: 5,
-        name: "Yoda"
+        name: "yoda"
         
     }, 
     {
-        id: 6,
-        name: "obi-wan kenobi"
+        id: 5,
+        name: "ben"
     },     
     
 ]
-
-
-// add click eventListner to the div to flip card
-const $div = $('#cardDisplay')
-const flipCard = (evt) => {
-    console.log(evt.target)
-}
-$div.on("click", flipCard)
-
-
 
 
 
@@ -56,19 +46,41 @@ class Game {
         this.dealer.shuffle(this.cards)
         console.log("cards after shuffled", this.dealer.cards)
         const cardsOnBoard = this.dealer.deal()
-        displayCards(cardsOnBoard)
+        this.displayCards(cardsOnBoard)
     }
 
     displayCards(cardsOnBoard) {
+        console.log(cardsOnBoard)
+
+        // add click eventListner to the div to flip card
+        const $div = $('#cardDisplay')
+        const flipCard = (evt) => {
+            console.log(evt.target.parentNode.id)
+
+            // let $divClicked = $(evt.target.parentNode.id)
+            // console.log($divClicked) 
+
+            let divClicked = document.getElementById(evt.target.parentNode.id)
+            console.log(divClicked)
+
+            console.log(cardsOnBoard[evt.target.parentNode.id].name)
+
+            //$(divClicked.first()).attr('src', `images/${cardsOnBoard[evt.target.parentNode.id].name}.jpg`)
+         
+            divClicked.firstChild.setAttribute("src", `images/${cardsOnBoard[evt.target.parentNode.id].name}.jpg`)
+
+        }
+        $div.on("click", flipCard)
+
 
     }
 
-    checkMatching() {
-    }
+    // checkMatching() {
+    // }
 
-    determinWinner() {
+    // determinWinner() {
 
-    }
+    // }
 }
 
 
@@ -92,7 +104,7 @@ class Dealer {
         this.cardsOnBoard.sort(() => Math.random() - 0.5)
         console.log(this.cardsOnBoard)
        
-        return cardsOnBoard
+        return this.cardsOnBoard
     }
 }
 

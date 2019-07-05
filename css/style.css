@@ -5,11 +5,16 @@
 
 div {
     padding: 50px;
-    background-color: rgb(63, 112, 70);
+    background-color: rgb(23, 88, 32);
 
 }
 
 div .col {
     border: 2px solid white;
 } 
+
+
+img {
+    height: 120px
+}
 
