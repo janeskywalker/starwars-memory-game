@@ -41,6 +41,38 @@ const cards = [
 
 
 
+
+
+// --------------GameBoard class---------------
+
+class GameBoard {
+    constructor(numOfCards) {
+        this.numOfCards = numOfCards
+        this.cardsDisplay = document.querySelector('#cards-display')
+    }
+
+
+    createBoard() {
+        for(let i=0; i<this.numOfCards; i++) {
+            const el = this.createElement(i)
+            this.cardsDisplay.appendChild(el)
+        }
+    }
+
+    createElement(i) {
+        const el = document.createElement('div')
+        el.setAttribute("id", i)
+        el.setAttribute("class", "col col-3")
+        const img = document.createElement('img')
+        img.setAttribute("src", "images/back.svg")
+        el.append(img)
+        console.log(el)
+        return el
+    }
+}
+
+
+
 // --------------Game class---------------
 class Game {
     constructor(cards) {
@@ -51,12 +83,19 @@ class Game {
         this.turn = 'Player One'
         this.cardsOnBoard = []
         this.matchCount = 0
+        this.gameBoard = new GameBoard(8)
+        console.log(this.gameBoard)
     }
+
+
+
     
 
     startGame() {
+
+        this.gameBoard.createBoard()
         // add click eventListner to the div to flip card
-        const div = document.querySelector("#cardDisplay")
+        const div = document.querySelector("#cards-display")
         // bind this back to the Game obj, instead of the element that 
         // the eventListener is added on
         div.addEventListener('click', this.playOneTurn.bind(this))
@@ -92,17 +131,18 @@ class Game {
 
             this.cardsFlipped.push({
                 flippedCard: this.cardsOnBoard[evt.target.parentNode.id], 
-                divId: evt.target.parentNode.id
+                // divId: evt.target.parentNode.id
+                img: evt.target
             })
             console.log(this.cardsFlipped)
 
             if(this.cardsFlipped.length === 2) {
-                this.checkMatching()
+                this.checkForMatch()
             }
         }
     }
         
-    checkMatching() {
+    checkForMatch() {
             console.log("cardsFlippedArray", this.cardsFlipped)
             // if match, add score 1, check if all cards flipped 
             if(this.cardsFlipped[0].flippedCard.name === this.cardsFlipped[1].flippedCard.name) {
@@ -118,18 +158,16 @@ class Game {
 
                 // check if hasCards?
 
-
+                this.switchPlayers()
 
             // if dont match, flip back, then switch player
             } else { 
                 console.log("no matching!")
                 setTimeout(() => {
-                    console.log('setTimeout')
+                    //console.log('setTimeout')
                     this.flipCardsBack()
                 }, 4000)
             }
-
-            this.switchPlayers()
 
         }
 
@@ -138,20 +176,27 @@ class Game {
         console.log("cardsFlippedArray:", this.cardsFlipped)
 
         // why not able to log out the parentNode -- the div??
+        // console.log(evt.target.parentNode)
 
         //find the parentNode id
         // console.log(cardsFlipped[0].divId)
         // console.log(cardsFlipped[1].divId)
 
-        const divId0 = this.cardsFlipped[0].divId
-        console.log(divId0)
-        let divToFlipBack0 = document.getElementById(divId0)
-        divToFlipBack0.firstChild.setAttribute("src", "images/back.svg")
+        // const divId0 = this.cardsFlipped[0].divId
+        // console.log(divId0)
+        // let divToFlipBack0 = document.getElementById(divId0)
+        // divToFlipBack0.firstChild.setAttribute("src", "images/back.svg")
 
-        const divId1 = this.cardsFlipped[1].divId
-        console.log(divId1)
-        let divToFlipBack1 = document.getElementById(divId1)
-        divToFlipBack1.firstChild.setAttribute("src", "images/back.svg")
+        // const divId1 = this.cardsFlipped[1].divId
+        // console.log(divId1)
+        // let divToFlipBack1 = document.getElementById(divId1)
+        // divToFlipBack1.firstChild.setAttribute("src", "images/back.svg")
+
+        this.cardsFlipped.forEach((next) => {
+            next.img.setAttribute('src', 'images/back.svg')
+        })
+
+        this.switchPlayers()
     }
 
 
@@ -164,24 +209,14 @@ class Game {
             this.turn = 'Player One'
         }
 
-        console.log(`${this.turn}`)
-
+        console.log(`${this.turn}'s turn`)
+        console.log(game)
         // flip cards back to back 
         // only flip the unmatched ones 
-
-
-
+        this.cardsFlipped = []
     }
 
-
-
-
-
-
-
-    // determinWinner() {
-
-    // }
+ 
 }
 
 
@@ -208,17 +243,8 @@ class Dealer {
         return this.cardsOnBoard
     }
 
-    hasCards() {
 
-    }
 }
-
-
-// --------------Board class---------------
-
-
-
-
 
 
 
@@ -230,3 +256,10 @@ class Dealer {
 const game = new Game(cards)
 game.startGame()
 
+// const el = game.gameBoard.createElement("1")
+
+// console.log(el)
+
+// const domElement = document.querySelector('#cards-display')
+
+// domElement.appendChild(game.gameBoard.createElement())
