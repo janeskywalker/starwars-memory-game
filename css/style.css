@@ -9,6 +9,10 @@ div {
 
 }
 
+
+
+
+
 div .col {
     border: 2px solid white;
 } 
@@ -18,3 +22,7 @@ img {
     height: 120px
 }
 
+
+#winner-display {
+    color: pink;
+}

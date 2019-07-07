@@ -28,7 +28,7 @@ const cards = [
     
 ]
 
-
+console.log(document.body)
 
 
     // play a turn
@@ -38,11 +38,6 @@ const cards = [
         // check if hasCards
         // play a new round 
             // add a play a new round to startGame 
-
-
-
-
-
 
 
 
@@ -62,7 +57,10 @@ class Game {
 
 
     startGame() {
-        this.gameBoard.createBoard()
+
+        //this.renderWinner()
+
+        this.gameBoard.renderBoard()
         // add click eventListner to the div to flip card
         const div = document.querySelector("#cards-display")
         // bind this back to the Game obj, instead of the element that 
@@ -72,11 +70,52 @@ class Game {
         this.dealer.shuffle()
         //console.log("cards after shuffled", this.dealer.cards)
         this.cardsOnBoard = this.dealer.deal()
+        
+    }
+
+    // determinWinner() {
+    //     if(this.isRoundCompleted) {
+    //         console.log("determin winner")
+    //         this.renderWinner()
+    //      }
+    // }
+
+    renderWinner() {
+        console.log("rendering winner")
+        
+        const winnerDisplay = document.querySelector('#winner-display')
+        const showWinner = document.createElement('div')
+        console.log(showWinner)
+        winnerDisplay.appendChild(showWinner)
+        console.log(winnerDisplay)
+        //let winner = " "
+      
+        console.log(this.playerOneScore, this.playerTwoScore)
+
+        document.querySelector('#game-board').innerText = " "
+
+        if(this.playerOneScore>this.playerTwoScore) {
+            showWinner.innerText = `The Winner is Player One` 
+        } else if (this.playerOneScore<this.playerTwoScore) {
+            showWinner.innerText = `The Winner is Player One` 
+        } else if (this.playerOneScore === this.playerTwoScore) {
+            showWinner.innerText = `It's A TIE!` 
+        }
+
+    
+        //winnerDisplay.innerText = `The Winner is ${winner}!` 
+
     }
 
     isRoundCompleted() {
         if(this.playerOneScore + this.playerTwoScore === 4) {
             console.log('one round done')
+            
+            setTimeout(()=>this.renderWinner(), 3000)
+
+            return true
+        } else {
+            return false 
         }
     }
 
@@ -128,7 +167,7 @@ class Game {
                 setTimeout(() => {
                     //console.log('setTimeout')
                     this.flipCardsBack()
-                }, 4000)
+                }, 2000)
             }
         }
 
@@ -160,6 +199,7 @@ class Game {
         this.cardsFlipped = []
 
         this.isRoundCompleted()
+        
     }
 }
 
@@ -202,7 +242,7 @@ class GameBoard {
     }
 
 
-    createBoard() {
+    renderBoard() {
         for(let i=0; i<this.numOfCards; i++) {
             const el = this.createElement(i)
             this.cardsDisplay.appendChild(el)
