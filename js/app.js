@@ -28,7 +28,7 @@ const cards = [
     
 ]
 
-console.log(document.body)
+//console.log(document.body)
 
 
     // play a turn
@@ -64,7 +64,6 @@ class Game {
         // add click eventListner to the div to flip card
         const div = document.querySelector("#cards-display")
         // bind this back to the Game obj, instead of the element that 
-        // the eventListener is added on
         div.addEventListener('click', this.playOneTurn.bind(this))
         // get dealer to shuffle and deal
         this.dealer.shuffle()
@@ -85,32 +84,26 @@ class Game {
         
         const winnerDisplay = document.querySelector('#winner-display')
         const showWinner = document.createElement('div')
-        console.log(showWinner)
         winnerDisplay.appendChild(showWinner)
         console.log(winnerDisplay)
-        //let winner = " "
       
         console.log(this.playerOneScore, this.playerTwoScore)
 
         document.querySelector('#game-board').innerText = " "
 
         if(this.playerOneScore>this.playerTwoScore) {
-            showWinner.innerText = `The Winner is Player One` 
+            showWinner.innerText = `Winner is Player One` 
         } else if (this.playerOneScore<this.playerTwoScore) {
-            showWinner.innerText = `The Winner is Player One` 
+            showWinner.innerText = `Winner is Player two` 
         } else if (this.playerOneScore === this.playerTwoScore) {
             showWinner.innerText = `It's A TIE!` 
         }
-
-    
-        //winnerDisplay.innerText = `The Winner is ${winner}!` 
-
     }
 
     isRoundCompleted() {
         if(this.playerOneScore + this.playerTwoScore === 4) {
             console.log('one round done')
-            
+
             setTimeout(()=>this.renderWinner(), 3000)
 
             return true
@@ -154,9 +147,11 @@ class Game {
                 if(this.turn === "Player One") {
                     this.playerOneScore += 1
                     console.log("playerOneScore:", this.playerOneScore)
+                    document.querySelector('#player-1-point').innerText = this.playerOneScore
                 } else if(this.turn === "Player Two") {
                     this.playerTwoScore += 1
                     console.log("playerTwoScore:", this.playerTwoScore)
+                    document.querySelector('#player-2-point').innerText = this.playerTwoScore
                 }
 
                 this.switchPlayers()
@@ -192,7 +187,7 @@ class Game {
             this.turn = 'Player One'
         }
 
-        console.log(`${this.turn}'s turn`)
+        console.log(`${game.turn}'s turn`)
         console.log(game)
         // flip cards back to back 
         // only flip the unmatched ones 
@@ -232,13 +227,16 @@ class Dealer {
 
 
 
-
 // --------------GameBoard class---------------
 
 class GameBoard {
     constructor(numOfCards) {
         this.numOfCards = numOfCards
         this.cardsDisplay = document.querySelector('#cards-display')
+        this.scoreDisplay = document.querySelector('#score-display')
+        this.turnDisplay = document.querySelector('#turn-display')
+
+        //console.log(game)
     }
 
 
@@ -247,6 +245,26 @@ class GameBoard {
             const el = this.createElement(i)
             this.cardsDisplay.appendChild(el)
         }
+
+        for(let j=1; j<3; j++) {
+            const scoreEl = this.createElement('div')
+            scoreEl.setAttribute("class", "col col-6")
+            scoreEl.setAttribute("id", `player-${j}-score`)
+            scoreEl.innerText = `Player ${j} Score: `
+            const score = document.createElement('span')
+            score.setAttribute("id", `player-${j}-point`)
+            scoreEl.appendChild(score)
+            this.scoreDisplay.appendChild(scoreEl)
+
+        }
+
+        const turnEl = this.createElement('div')
+        turnEl.setAttribute("class", "col col-12")
+        turnEl.setAttribute("id", "show-turn")
+        turnEl.innerText = `Plyer One's Turn to Flip Two Cards`
+        this.turnDisplay.appendChild(turnEl)
+
+
     }
 
     createElement(i) {
@@ -259,6 +277,8 @@ class GameBoard {
         //console.log(el)
         return el
     }
+
+    
 }
 
 
@@ -267,4 +287,5 @@ class GameBoard {
 
 const game = new Game(cards)
 game.startGame()
+
 

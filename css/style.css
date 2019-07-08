@@ -24,5 +24,17 @@ img {
 
 
 #winner-display {
-    color: pink;
+    color: yellow;
+    font: 100px;
 }
+
+
+#score-display {
+    color: yellow;
+} 
+
+#turn-display {
+    color: yellow;
+} 
+
+
