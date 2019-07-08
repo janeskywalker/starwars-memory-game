@@ -2,11 +2,13 @@
     box-sizing: border-box;
 }
 
+body {
+    background-color: rgb(23, 88, 32);
+}
+
 
 div {
-    padding: 50px;
-    background-color: rgb(23, 88, 32);
-
+    padding: 30px;
 }
 
 
@@ -14,7 +16,7 @@ div {
 
 
 div .col {
-    border: 2px solid white;
+     /* border: 2px solid white; */
 } 
 
 

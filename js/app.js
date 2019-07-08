@@ -46,25 +46,32 @@ class Game {
     constructor(cards) {
         this.gameBoard = new GameBoard(8)
         this.dealer = new Dealer(cards)
+        this.clickHandler = this.playOneTurn.bind(this)
+        console.log(this.gameBoard)
+        this.init()
+    }
+
+    init() {
         this.cardsFlipped = []
         this.playerOneScore = 0
         this.playerTwoScore = 0
         this.turn = 'Player One'
         this.cardsOnBoard = []
-        this.matchCount = 0
-        console.log(this.gameBoard)
     }
 
-
     startGame() {
-
-        //this.renderWinner()
+        // reset the state
+        this.init()
 
         this.gameBoard.renderBoard()
         // add click eventListner to the div to flip card
+
+        //  go create this when renderBoard
         const div = document.querySelector("#cards-display")
+
+        console.log(div)
         // bind this back to the Game obj, instead of the element that 
-        div.addEventListener('click', this.playOneTurn.bind(this))
+        div.addEventListener('click', this.clickHandler)
         // get dealer to shuffle and deal
         this.dealer.shuffle()
         //console.log("cards after shuffled", this.dealer.cards)
@@ -72,18 +79,27 @@ class Game {
         
     }
 
+    clearGameBoard() {
+        const div = document.querySelector("#cards-display")
+        div.removeEventListener('click', this.clickHandler)
+        document.querySelector('#game-board').remove()
+    }
+
 
     renderWinner() {
         console.log("rendering winner")
+
+        this.clearGameBoard()
         
-        const winnerDisplay = document.querySelector('#winner-display')
+        const winnerDisplay = document.createElement('div')
+        winnerDisplay.setAttribute("id", "winner-display")
+        document.body.appendChild(winnerDisplay)
+
         const showWinner = document.createElement('div')
         winnerDisplay.appendChild(showWinner)
         console.log(winnerDisplay)
       
         console.log(this.playerOneScore, this.playerTwoScore)
-
-        document.querySelector('#game-board').innerText = " "
 
         if(this.playerOneScore>this.playerTwoScore) {
             showWinner.innerText = `Winner is Player One` 
@@ -102,18 +118,28 @@ class Game {
         btnPlayMoreRound.setAttribute('class', "btn btn-primary btn-lg")
         btnPlayMoreRound.innerText = "Play Another Round"
         winnerDisplay.appendChild(btnPlayMoreRound)
-        btnPlayMoreRound.addEventListener("click", playAnotherRound())
 
-        const btnQuit = document.createElement('button')
-        btnQuit.setAttribute('class', "btn btn-warning btn-lg")
-        btnQuit.innerText = "Quit"
-        winnerDisplay.appendChild(btnQuit)
+
+        const playRound = () => {
+            // btnPlayMoreRound.removeEventListener('click', playRound)
+            this.playAnotherRound()
+        }
+
+        // btnPlayMoreRound.addEventListener("click", this.playAnotherRound)
+        btnPlayMoreRound.addEventListener("click", playRound, { once: true })
+
+        // const btnQuit = document.createElement('button')
+        // btnQuit.setAttribute('class', "btn btn-warning btn-lg")
+        // btnQuit.innerText = "Quit"
+        // winnerDisplay.appendChild(btnQuit)
         //tnQuit.addEventListener("click", startPage())
 
     }
 
-    playNextRound() {
-
+    playAnotherRound() {
+        document.querySelector('#winner-display').remove()
+        //const newGame = new Game(cards)
+        game.startGame()
     }
 
     isRoundCompleted() {
@@ -224,7 +250,7 @@ class Game {
 class Dealer {
     constructor (cards) {
         this.cards = cards
-        this.cardsOnBoard = []
+        // this.cardsOnBoard = []
     }
 
     shuffle() {
@@ -233,13 +259,14 @@ class Dealer {
     }
 
     deal() {
+        const cardsToDeal = []
         // top two cards on board, deal top two cards twice 
-        this.cardsOnBoard.push(this.cards[0], this.cards[1], this.cards[0], this.cards[1])
-        this.cardsOnBoard.push(this.cards[2], this.cards[3], this.cards[2], this.cards[3])
-        this.cardsOnBoard.sort(() => Math.random() - 0.5)
-        console.log(this.cardsOnBoard)
+        cardsToDeal.push(this.cards[0], this.cards[1], this.cards[0], this.cards[1])
+        cardsToDeal.push(this.cards[2], this.cards[3], this.cards[2], this.cards[3])
+        cardsToDeal.sort(() => Math.random() - 0.5)
+        console.log(cardsToDeal)
        
-        return this.cardsOnBoard
+        return cardsToDeal
     }
 }
 
@@ -260,9 +287,35 @@ class GameBoard {
 
 
     renderBoard() {
+
+        const gameBoardContainer = document.createElement('div')
+        gameBoardContainer.setAttribute("id", "game-board")
+        gameBoardContainer.setAttribute("class", "container")
+        document.body.appendChild(gameBoardContainer)
+
+        const cardsDisplay = document.createElement('div')
+        const turnDisplay = document.createElement('div')
+        const scoreDisplay = document.createElement('div')
+       
+
+        cardsDisplay.setAttribute("id", "cards-display")
+        cardsDisplay.setAttribute("class", "row")
+
+        turnDisplay.setAttribute("id", "turn-display")
+        turnDisplay.setAttribute("class", "row")
+
+        scoreDisplay.setAttribute("id", "score-display")
+        scoreDisplay.setAttribute("class", "row")
+
+        gameBoardContainer.appendChild(turnDisplay)
+        gameBoardContainer.appendChild(cardsDisplay)
+        gameBoardContainer.appendChild(scoreDisplay)
+
+
+        //append cards
         for(let i=0; i<this.numOfCards; i++) {
-            const el = this.createElement(i)
-            this.cardsDisplay.appendChild(el)
+            const el = this.createCard(i)
+            cardsDisplay.appendChild(el)
         }
 
         // display score
@@ -275,24 +328,24 @@ class GameBoard {
             score.setAttribute("id", `player-${j}-point`)
             score.setAttribute("class", `big-font`)
             scoreEl.appendChild(score)
-            this.scoreDisplay.appendChild(scoreEl)
+            scoreDisplay.appendChild(scoreEl)
 
         }
 
         // display turn
-        const turnEl = this.createElement('div')
+        const turnEl = document.createElement('div')
         turnEl.setAttribute("class", "col col-12")
         turnEl.setAttribute("id", "show-turn")
         const turn = document.createElement('span')
         turn.setAttribute("id", "turn")
         turnEl.appendChild(turn)
         turnEl.innerHTML = `<span id="turn" class="big-font">${game.turn}</span>'s Turn to Flip Two Cards`
-        this.turnDisplay.appendChild(turnEl)
+        turnDisplay.appendChild(turnEl)
 
 
     }
 
-    createElement(i) {
+    createCard(i) {
         const el = document.createElement('div')
         el.setAttribute("id", i)
         el.setAttribute("class", "col col-3")
