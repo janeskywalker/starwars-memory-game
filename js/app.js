@@ -188,7 +188,10 @@ class Game {
         }
 
         console.log(`${game.turn}'s turn`)
-        console.log(game)
+
+        
+        console.log(document.querySelector("#game-board"))
+        document.querySelector('#turn').innerText = `${game.turn}`
         // flip cards back to back 
         // only flip the unmatched ones 
         this.cardsFlipped = []
@@ -246,22 +249,28 @@ class GameBoard {
             this.cardsDisplay.appendChild(el)
         }
 
+        // display score
         for(let j=1; j<3; j++) {
-            const scoreEl = this.createElement('div')
+            const scoreEl = document.createElement('div')
             scoreEl.setAttribute("class", "col col-6")
             scoreEl.setAttribute("id", `player-${j}-score`)
             scoreEl.innerText = `Player ${j} Score: `
             const score = document.createElement('span')
             score.setAttribute("id", `player-${j}-point`)
+            score.setAttribute("class", `big-font`)
             scoreEl.appendChild(score)
             this.scoreDisplay.appendChild(scoreEl)
 
         }
 
+        // display turn
         const turnEl = this.createElement('div')
         turnEl.setAttribute("class", "col col-12")
         turnEl.setAttribute("id", "show-turn")
-        turnEl.innerText = `Plyer One's Turn to Flip Two Cards`
+        const turn = document.createElement('span')
+        turn.setAttribute("id", "turn")
+        turnEl.appendChild(turn)
+        turnEl.innerHTML = `<span id="turn" class="big-font">${game.turn}</span>'s Turn to Flip Two Cards`
         this.turnDisplay.appendChild(turnEl)
 
 

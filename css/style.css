@@ -24,8 +24,8 @@ img {
 
 
 #winner-display {
-    color: yellow;
-    font: 100px;
+    font-size:  70px;
+    color: red
 }
 
 
@@ -38,3 +38,8 @@ img {
 } 
 
 
+
+.big-font{
+    font-size:  30px;
+    color: red
+}
