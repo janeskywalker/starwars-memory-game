@@ -72,12 +72,6 @@ class Game {
         
     }
 
-    // determinWinner() {
-    //     if(this.isRoundCompleted) {
-    //         console.log("determin winner")
-    //         this.renderWinner()
-    //      }
-    // }
 
     renderWinner() {
         console.log("rendering winner")
@@ -98,6 +92,28 @@ class Game {
         } else if (this.playerOneScore === this.playerTwoScore) {
             showWinner.innerText = `It's A TIE!` 
         }
+
+        this.renderButtons()
+    }
+
+    renderButtons() {
+        const winnerDisplay = document.querySelector('#winner-display')
+        const btnPlayMoreRound = document.createElement('button')
+        btnPlayMoreRound.setAttribute('class', "btn btn-primary btn-lg")
+        btnPlayMoreRound.innerText = "Play Another Round"
+        winnerDisplay.appendChild(btnPlayMoreRound)
+        btnPlayMoreRound.addEventListener("click", playAnotherRound())
+
+        const btnQuit = document.createElement('button')
+        btnQuit.setAttribute('class', "btn btn-warning btn-lg")
+        btnQuit.innerText = "Quit"
+        winnerDisplay.appendChild(btnQuit)
+        //tnQuit.addEventListener("click", startPage())
+
+    }
+
+    playNextRound() {
+
     }
 
     isRoundCompleted() {
@@ -283,7 +299,6 @@ class GameBoard {
         const img = document.createElement('img')
         img.setAttribute("src", "images/back.svg")
         el.append(img)
-        //console.log(el)
         return el
     }
 
